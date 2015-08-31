@@ -94,6 +94,9 @@ install:
   # target Python version and architecture
   - "%CMD_IN_ENV% pip install -r dev-requirements.txt"
 
+  # clone git submodule
+  - "git submodule update --init --recursive"
+
 build: false  # Not a C# project, build stuff at the test step instead.
 
 test_script:
