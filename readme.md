@@ -6,7 +6,7 @@ Compile pdfminer to Windows executable on AppVeyor.
 
 ## usage
 
-- download pdfminer-exe.zip
+- download pdfminer-exe.zip from AppVeyor artifact page.
 - extract pdfminer-exe.zip
 
 ```cmd
