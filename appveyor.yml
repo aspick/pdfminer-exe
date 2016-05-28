@@ -101,20 +101,24 @@ build: false  # Not a C# project, build stuff at the test step instead.
 
 test_script:
   - "%CMD_IN_ENV% mkdir pdfminer\\pdfminer\\cmap"
-  - "%CMD_IN_ENV% python pdfminer\\tools\\conv_cmap.py -c B5=cp950 -c UniCNS-UTF8=utf-8 pdfminer\\pdfminer\\cmap Adobe-CNS1 cmaprsrc\\cid2code_Adobe_CNS1.txt"
-  - "%CMD_IN_ENV% python pdfminer\\tools\\conv_cmap.py -c GBK-EUC=cp936 -c UniGB-UTF8=utf-8 pdfminer\\pdfminer\\cmap Adobe-GB1 cmaprsrc\\cid2code_Adobe_GB1.txt"
-  - "%CMD_IN_ENV% python pdfminer\\tools\\conv_cmap.py -c RKSJ=cp932 -c EUC=euc-jp -c UniJIS-UTF8=utf-8 pdfminer\\pdfminer\\cmap Adobe-Japan1 cmaprsrc\cid2code_Adobe_Japan1.txt"
-  - "%CMD_IN_ENV% python pdfminer\\tools\\conv_cmap.py -c KSC-EUC=euc-kr -c KSC-Johab=johab -c KSCms-UHC=cp949 -c UniKS-UTF8=utf-8 pdfminer\\pdfminer\\cmap Adobe-Korea1 cmaprsrc\\cid2code_Adobe_Korea1.txt"
-  - "%CMD_IN_ENV% python pdfminer\\setup.py install"
+  - "%CMD_IN_ENV% python pdfminer\\tools\\conv_cmap.py -c B5=cp950 -c UniCNS-UTF8=utf-8 pdfminer\\pdfminer\\cmap Adobe-CNS1 pdfminer\\cmaprsrc\\cid2code_Adobe_CNS1.txt"
+  - "%CMD_IN_ENV% python pdfminer\\tools\\conv_cmap.py -c GBK-EUC=cp936 -c UniGB-UTF8=utf-8 pdfminer\\pdfminer\\cmap Adobe-GB1 pdfminer\\cmaprsrc\\cid2code_Adobe_GB1.txt"
+  - "%CMD_IN_ENV% python pdfminer\\tools\\conv_cmap.py -c RKSJ=cp932 -c EUC=euc-jp -c UniJIS-UTF8=utf-8 pdfminer\\pdfminer\\cmap Adobe-Japan1 pdfminer\\cmaprsrc\\cid2code_Adobe_Japan1.txt"
+  - "%CMD_IN_ENV% python pdfminer\\tools\\conv_cmap.py -c KSC-EUC=euc-kr -c KSC-Johab=johab -c KSCms-UHC=cp949 -c UniKS-UTF8=utf-8 pdfminer\\pdfminer\\cmap Adobe-Korea1 pdfminer\\cmaprsrc\\cid2code_Adobe_Korea1.txt"
+  - "%CMD_IN_ENV% cd pdfminer && python setup.py install"
   - "%CMD_IN_ENV% python setup.py py2exe"
 
 after_test:
   # If tests are successful, create binary packages for the project.
   - ps: "ls dist"
+  - "rename pdfminer src"
+  - "rename dist pdfminer"
+  - "7z a pdfminer-exe.zip pdfminer\\*"
 
 artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
-  - path: dist\*
+  - path: pdfminer-exe.zip
+    name: pdfminer-exe
 
 #on_success:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse
